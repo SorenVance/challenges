@@ -1,9 +1,19 @@
 package org.kramer.lettervaluesum;
 
 public class LetterValueSummer {
-  public int sum(String source) {
-    if(null == source ||source.isEmpty())
+  private static final int ASCII_OFFSET = 96;
+  public int sum(String input) {
+    if(isNullOrEmpty(input))
       return 0;
-    return source.equals("a") ? 1 : 26;
+
+    return input.chars().map(LetterValueSummer::determineCharValue).sum();
+  }
+
+  private static int determineCharValue(int input) {
+    return input - ASCII_OFFSET;
+  }
+
+  private static boolean isNullOrEmpty(String input) {
+    return null == input || input.isEmpty();
   }
 }

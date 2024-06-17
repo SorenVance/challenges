@@ -17,7 +17,7 @@ class LetterValueSummerTests {
   }
 
   @ParameterizedTest(name = "Given Input of ''{0}'', should return {1}")
-  @CsvSource({"a, 1", "z, 26"})
+  @CsvSource({"a, 1", "z, 26", "cab, 6"})
   void sum_givenInputString_ShouldSumCharacters(String input, int expectedSum) {
     assertEquals(expectedSum, SUMMER.sum(input));
   }
