@@ -3,16 +3,16 @@ package org.kramer.lettervaluesum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.kramer.lettervaluesum.LetterValueChallenge.EquivalentWordPair;
+import org.kramer.lettervaluesum.LetterValueChallenge.WordPair;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LetterValueChallengeTests {
     private static final LetterValueChallenge challenge;
@@ -51,10 +51,35 @@ class LetterValueChallengeTests {
 
     @Test
     void challenge4_FindEquivalentWordPairsWithSpecifiedLengthDifference() {
-        Map<Integer, List<EquivalentWordPair>> result = challenge.findEquivalentWordsWithSameSum(11);
-//    result.values().forEach(words -> assertTrue(words.size() > 1));
+        Map<Integer, List<WordPair>> result = challenge.findEquivalentWordsWithSameSumAndDifferentLengths(11);
         assertEquals(2, result.size());
-        assertTrue(result.get(151).contains(new EquivalentWordPair("zyzzyva", "biodegradabilities")));
-        assertTrue(result.get(219).contains(new EquivalentWordPair("voluptuously", "electroencephalographic")));
+        assertTrue(result.get(151).contains(new WordPair("zyzzyva", "biodegradabilities")));
+        assertTrue(result.get(219).contains(new WordPair("voluptuously", "electroencephalographic")));
     }
+
+    // region CHALLENGE 5
+    @Test
+    void challenge5_FindExclusiveWordPairsWithSameSum() {
+        Map<Integer, List<WordPair>> result = challenge.findExclusiveWordsWithSameSum(188);
+        assertNotNull(result);
+        assertTrue(result.containsKey(188));
+        assertTrue(result.get(188).contains(new WordPair("cytotoxicity", "unreservedness")));
+        assertTrue(result.containsKey(194));
+        assertTrue(result.get(194).contains(new WordPair("defenselessnesses", "microphotographic")));
+        assertTrue(result.get(194).contains(new WordPair("defenselessnesses", "photomicrographic")));
+    }
+
+    @Test
+    void challenge5_findExclusiveWords_GivenList_ReturnsExpectedWords() {
+        Map.Entry<Integer, List<String>> wordsBySumEntry = new AbstractMap.SimpleEntry<>(
+                188, List.of("cytotoxicity", "unreservedness", "cryptocurrency"));
+
+        var result = challenge.findExclusiveWords(wordsBySumEntry);
+        assertEquals(1, result.getValue().size());
+        assertEquals(188, result.getKey());
+        assertTrue(result.getValue().contains(new WordPair("cytotoxicity", "unreservedness")));
+        assertNotNull(result);
+    }
+
+    // end region
 }
